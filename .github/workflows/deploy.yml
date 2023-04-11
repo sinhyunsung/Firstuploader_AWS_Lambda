@@ -28,8 +28,8 @@ jobs:
         # or if using AWS credentials directly
         AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.ACCESS_KEY_SECRET }}
-    - name: Enter dir and deploy
-      uses: serverless/github-action@v3.1
-      with:
-        args: -c "serverless deploy"
-        entrypoint: /bin/sh
+    # - name: Enter dir and deploy
+    #   uses: serverless/github-action@v3.1
+    #   with:
+    #     args: -c "serverless deploy"
+    #     entrypoint: /bin/sh

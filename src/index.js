@@ -16,7 +16,7 @@ module.exports.handler = async (event, context) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: "Hello Worldsss!"
+      message: "테스트완료 삐빅"
     })
   }
 
