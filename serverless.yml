@@ -1,0 +1,15 @@
+service: puppeteerwithlambda
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 512
+  timeout: 30
+  region: ap-northeast-2
+functions:
+  start:
+    handler: src/index.handler
+    events:
+      - http:
+          path: /start/{id}
+          method: get
