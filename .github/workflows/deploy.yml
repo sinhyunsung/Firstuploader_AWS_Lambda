@@ -3,8 +3,8 @@ name: 'Deploy to AWS CloudFormation'
 on: 
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  # pull_request:
+  #   branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.ACCESS_KEY_SECRET }}
-          aws-region: ${{ github.event.inputs.region }}
+          aws-region: ap-northeast-2
 
       # Deploy to AWS CloudFormation
       - name: Deploy to AWS CloudFormation
