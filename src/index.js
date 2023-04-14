@@ -51,7 +51,7 @@ class Crawling{
       executablePath: await chromium.executablePath,
       args: minimal_args,
       defaultViewport: chromium.defaultViewport,
-      headless: false,
+      headless: true,
     });
   }
   
