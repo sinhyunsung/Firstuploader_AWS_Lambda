@@ -119,14 +119,14 @@ const classMap = {
 
 module.exports.handler = async (event, context) => {
 
-
-  const words = event['params']['querystring']['url'].split('/')[2];
+  const url= JSON.parse(event.body).url;
+  const words = url.split('/')[2];
   const ClassConstructor = classMap[words];
 
   let web=null;
   // Create an instance of the class constructor if it exists
   if (ClassConstructor) {
-    web = new ClassConstructor(event['params']['querystring']['url']);
+    web = new ClassConstructor(url);
     // do something with web...
   }else{
     return {
