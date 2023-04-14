@@ -120,13 +120,13 @@ const classMap = {
 module.exports.handler = async (event, context) => {
 
 
-  const words = event.pathParameters.url.split('/')[2];
+  const words = event['params']['querystring']['url'].split('/')[2];
   const ClassConstructor = classMap[words];
 
   let web=null;
   // Create an instance of the class constructor if it exists
   if (ClassConstructor) {
-    web = new ClassConstructor(event.pathParameters.url);
+    web = new ClassConstructor(event['params']['querystring']['url']);
     // do something with web...
   }else{
     return {
