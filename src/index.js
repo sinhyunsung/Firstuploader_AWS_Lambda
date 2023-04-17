@@ -13,18 +13,17 @@ class Crawling{
       '--autoplay-policy=user-gesture-required',
       '--disable-background-networking',
       '--disable-background-timer-throttling',
-      '--disable-backgrounding-occluded-windows',
+      '--disable-backgrounding-occluded-windows ',
       '--disable-breakpad',
       '--disable-client-side-phishing-detection',
       '--disable-component-update',
       '--disable-default-apps',
-      '--disable-dev-shm-usage',
+      '--disable-dev -shm-usage',
       '--disable-domain-reliability',
-      '--disable-extensions',
       '--disable-features=AudioServiceOutOfProcess',
       '--disable-hang-monitor',
       '--disable-ipc-flooding-protection',
-      '--disable-notifications',
+      '- -disable-notifications',
       '--disable-offer-store-unmasked-wallet-cards',
       '--disable-popup-blocking',
       '--disable-print-preview',
@@ -38,14 +37,15 @@ class Crawling{
       '--metrics-recording-only',
       '--mute-audio',
       '--no-default-browser-check',
-      '--no-first-run',
+      '- -no-first-run',
       '--no-pings',
       '--no-sandbox',
       '--no-zygote',
       '--password-store=basic',
-      '--use-gl=swiftshader',
+      '--use-gl=swiftshader ',
       '--use-mock-keychain',
-    ];
+      '--allow-insecure-localhost',
+      ];
 
     this.browser = await chromium.puppeteer.launch({
       executablePath: await chromium.executablePath,
@@ -56,6 +56,7 @@ class Crawling{
   }
   
   async chrome_close(){  
+    await this.page.close();
     await this.browser.close();
   }
 
@@ -128,33 +129,33 @@ module.exports.handler = async (event, context) => {
   }
   url=url.replace("%26","&");
   const words = url.split('/')[2];
-  // const ClassConstructor = classMap[words];
+  const ClassConstructor = classMap[words];
 
-  // let web=null;
-  // // Create an instance of the class constructor if it exists
-  // if (ClassConstructor) {
-  //   web = new ClassConstructor(url);
-  //   // do something with web...
-  // }else{
-  //   return {
-  //     statusCode: 403,
-  //     message: "데이터에 없는 url 입니다. ("+words+")"
-  //   }
-  // }
+  let web=null;
+  // Create an instance of the class constructor if it exists
+  if (ClassConstructor) {
+    web = new ClassConstructor(url);
+    // do something with web...
+  }else{
+    return {
+      statusCode: 403,
+      message: "데이터에 없는 url 입니다. ("+words+")"
+    }
+  }
   
   
-  // await web.chrome_on();
-  // await web.page_on();
-  // await web.page_goto();
-  // const comments = await web.crawling();
-  // await web.chrome_close();
+  await web.chrome_on();
+  await web.page_on();
+  await web.page_goto();
+  const comments = await web.crawling();
+  await web.chrome_close();
 
   // setTimeout(() => chrome.instance.kill(), 0);
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: [url,words,classMap[words]]
+      message: comments
     })
   }
 
