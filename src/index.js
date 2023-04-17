@@ -121,10 +121,12 @@ exports.handler = async (event, context, callback) => {
   
   // Do something with the parameters...
   
-  callback(null, {
+  return {
     statusCode: 200,
-    body: JSON.stringify({ result: event })
-  });
+    body: JSON.stringify({
+      message: params
+    })
+  }
 };
 // module.exports.handler = async (event, context) => {
 
