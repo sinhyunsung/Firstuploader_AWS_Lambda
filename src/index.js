@@ -10,46 +10,46 @@ class Crawling{
 
   async chrome_on(){
     const minimal_args = [
-      '--autoplay-policy=user-gesture-required',
-      '--disable-background-networking',
-      '--disable-background-timer-throttling',
-      '--disable-backgrounding-occluded-windows ',
-      '--disable-breakpad',
-      '--disable-client-side-phishing-detection',
-      '--disable-component-update',
-      '--disable-default-apps',
-      '--disable-dev -shm-usage',
-      '--disable-domain-reliability',
-      '--disable-features=AudioServiceOutOfProcess',
-      '--disable-hang-monitor',
-      '--disable-ipc-flooding-protection',
-      '- -disable-notifications',
-      '--disable-offer-store-unmasked-wallet-cards',
-      '--disable-popup-blocking',
-      '--disable-print-preview',
-      '--disable-prompt-on-repost',
-      '--disable-renderer-backgrounding',
-      '--disable-setuid-sandbox',
-      '--disable-speech-api',
-      '--disable-sync',
-      '--hide-scrollbars',
-      '--ignore-gpu-blacklist',
-      '--metrics-recording-only',
-      '--mute-audio',
-      '--no-default-browser-check',
-      '- -no-first-run',
-      '--no-pings',
-      '--no-sandbox',
-      '--no-zygote',
-      '--password-store=basic',
-      '--use-gl=swiftshader ',
-      '--use-mock-keychain',
-      '--allow-insecure-localhost',
+      // '--autoplay-policy=user-gesture-required',
+      // '--disable-background-networking',
+      // '--disable-background-timer-throttling',
+      // '--disable-backgrounding-occluded-windows ',
+      // '--disable-breakpad',
+      // '--disable-client-side-phishing-detection',
+      // '--disable-component-update',
+      // '--disable-default-apps',
+      // '--disable-dev -shm-usage',
+      // '--disable-domain-reliability',
+      // '--disable-features=AudioServiceOutOfProcess',
+      // '--disable-hang-monitor',
+      // '--disable-ipc-flooding-protection',
+      // '- -disable-notifications',
+      // '--disable-offer-store-unmasked-wallet-cards',
+      // '--disable-popup-blocking',
+      // '--disable-print-preview',
+      // '--disable-prompt-on-repost',
+      // '--disable-renderer-backgrounding',
+      // '--disable-setuid-sandbox',
+      // '--disable-speech-api',
+      // '--disable-sync',
+      // '--hide-scrollbars',
+      // '--ignore-gpu-blacklist',
+      // '--metrics-recording-only',
+      // '--mute-audio',
+      // '--no-default-browser-check',
+      // '- -no-first-run',
+      // '--no-pings',
+      // '--no-sandbox',
+      // '--no-zygote',
+      // '--password-store=basic',
+      // '--use-gl=swiftshader ',
+      // '--use-mock-keychain',
+      // '--allow-insecure-localhost',
       ];
 
     this.browser = await chromium.puppeteer.launch({
       executablePath: await chromium.executablePath,
-      args: minimal_args,
+      args: chromium.args,
       defaultViewport: chromium.defaultViewport,
       headless: true,
     });
@@ -63,26 +63,26 @@ class Crawling{
   async page_on(){
     this.page = await this.browser.newPage(); 
     
-      const blockResource = [
-        'image', 
-        'script', 
-        'stylesheet', 
-        'xhr', 
-        'font', 
-        'other'
-      ];
+      // const blockResource = [
+      //   'image', 
+      //   'script', 
+      //   'stylesheet', 
+      //   'xhr', 
+      //   'font', 
+      //   'other'
+      // ];
 
-      await this.page.setRequestInterception(true);
+      // await this.page.setRequestInterception(true);
 
-      this.page.on('request', req => {
-        // 리소스 유형
-        const resource = req.resourceType(); 
-        if (blockResource.indexOf(resource) !== -1) {
-          req.abort();  // 리소스 막기
-        } else {
-          req.continue(); // 리소스 허용하기
-        }
-      });
+      // this.page.on('request', req => {
+      //   // 리소스 유형
+      //   const resource = req.resourceType(); 
+      //   if (blockResource.indexOf(resource) !== -1) {
+      //     req.abort();  // 리소스 막기
+      //   } else {
+      //     req.continue(); // 리소스 허용하기
+      //   }
+      // });
   }
 
   async page_goto(){
