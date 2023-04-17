@@ -117,18 +117,14 @@ const classMap = {
 // ############################### 메인 코드 ############################//
 
 exports.handler = async (event, context, callback) => {
-  const params = JSON.parse(event.body);
-  const param1Value = params.param1;
-  const param2Value = params.param2;
+  const params = event;
   
   // Do something with the parameters...
-  
-  const result = 'Some result value'; // The value you want to return
   
   callback(null, {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ result: result })
+    body: JSON.stringify({ result: event })
   });
 };
 // module.exports.handler = async (event, context) => {
