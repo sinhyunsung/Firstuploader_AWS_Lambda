@@ -142,18 +142,18 @@ module.exports.handler = async (event, context) => {
   }
   
   
-  await web.chrome_on();
-  await web.page_on();
-  await web.page_goto();
-  const comments = await web.crawling();
-  await web.chrome_close();
+  // await web.chrome_on();
+  // await web.page_on();
+  // await web.page_goto();
+  // const comments = await web.crawling();
+  // await web.chrome_close();
 
-  setTimeout(() => chrome.instance.kill(), 0);
+  // setTimeout(() => chrome.instance.kill(), 0);
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: comments,
+      message: words,
     })
   }
 
