@@ -116,7 +116,7 @@ const classMap = {
 
 // ############################### 메인 코드 ############################//
 
-exports.handler = async (event, context, callback) => {
+module.exports.handler = async (event, context, callback) => {
   const params = event;
   
   // Do something with the parameters...
