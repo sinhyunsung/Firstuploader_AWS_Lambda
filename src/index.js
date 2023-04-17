@@ -119,6 +119,11 @@ const classMap = {
 
 module.exports.handler = async (event, context) => {
 
+  
+  const userId = event.params.path.userId;
+  const body = JSON.stringify(event["body-json"]);
+  const header =  event.params.header;
+
   // const url= event.params.path.url;
   // const words = url.split('/')[2];
   // const ClassConstructor = classMap[words];
@@ -143,12 +148,14 @@ module.exports.handler = async (event, context) => {
   // await web.chrome_close();
 
   //setTimeout(() => chrome.instance.kill(), 0);
-
+ return {
+    body: { id: userId, header: header, body: body }
+  };
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: event,
-      // msg: event.params.path.url
+      message: comments,
+      msg: event.params.path.url
     })
   }
 }
