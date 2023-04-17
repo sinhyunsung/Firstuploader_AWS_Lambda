@@ -116,46 +116,60 @@ const classMap = {
 
 // ############################### 메인 코드 ############################//
 
-
-module.exports.handler = async (event, context) => {
-
+exports.handler = async (event, context, callback) => {
+  const params = JSON.parse(event.body);
+  const param1Value = params.param1;
+  const param2Value = params.param2;
   
-  const body = JSON.stringify(event["body-json"]);
-
-  // const url= event.params.path.url;
-  // const words = url.split('/')[2];
-  // const ClassConstructor = classMap[words];
-
-  // let web=null;
-  // // Create an instance of the class constructor if it exists
-  // if (ClassConstructor) {
-  //   web = new ClassConstructor(url);
-  //   // do something with web...
-  // }else{
-  //   return {
-  //     statusCode: 403,
-  //     message: "데이터에 없는 url 입니다. ("+words+")"
-  //   }
-  // }
+  // Do something with the parameters...
   
+  const result = 'Some result value'; // The value you want to return
   
-  // await web.chrome_on();
-  // await web.page_on();
-  // await web.page_goto();
-  // const comments = await web.crawling();
-  // await web.chrome_close();
-
-  //setTimeout(() => chrome.instance.kill(), 0);
- return {
-  statusCode: 200,
-  body: body
-  };
-  return {
+  callback(null, {
     statusCode: 200,
-    body: JSON.stringify({
-      message: comments,
-      msg: event.params.path.url
-    })
-  }
-}
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ result: result })
+  });
+};
+// module.exports.handler = async (event, context) => {
+
+  
+//   const body = JSON.stringify(event["body-json"]);
+
+//   // const url= event.params.path.url;
+//   // const words = url.split('/')[2];
+//   // const ClassConstructor = classMap[words];
+
+//   // let web=null;
+//   // // Create an instance of the class constructor if it exists
+//   // if (ClassConstructor) {
+//   //   web = new ClassConstructor(url);
+//   //   // do something with web...
+//   // }else{
+//   //   return {
+//   //     statusCode: 403,
+//   //     message: "데이터에 없는 url 입니다. ("+words+")"
+//   //   }
+//   // }
+  
+  
+//   // await web.chrome_on();
+//   // await web.page_on();
+//   // await web.page_goto();
+//   // const comments = await web.crawling();
+//   // await web.chrome_close();
+
+//   //setTimeout(() => chrome.instance.kill(), 0);
+//  return {
+//   statusCode: 200,
+//   body: body
+//   };
+//   return {
+//     statusCode: 200,
+//     body: JSON.stringify({
+//       message: comments,
+//       msg: event.params.path.url
+//     })
+//   }
+// }
 
