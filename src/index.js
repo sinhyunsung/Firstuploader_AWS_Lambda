@@ -148,7 +148,7 @@ module.exports.handler = async (event, context) => {
     statusCode: 200,
     body: JSON.stringify({
       // message: comments,
-      msg: event
+      msg: 1
     })
   }
 }
