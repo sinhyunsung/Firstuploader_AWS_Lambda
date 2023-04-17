@@ -120,7 +120,7 @@ const classMap = {
 module.exports.handler = async (event, context) => {
 
   
-  const url= event["queryStringParameters"]["url"];
+  const url=event["queryStringParameters"]["url"];
   const words = url.split('/')[2];
   const ClassConstructor = classMap[words];
 
