@@ -126,6 +126,7 @@ module.exports.handler = async (event, context) => {
   else{
     url=event["queryStringParameters"]["url"];
   }
+  url=url.replace("%26","&");
   const words = url.split('/')[2];
   const ClassConstructor = classMap[words];
 
@@ -153,7 +154,7 @@ module.exports.handler = async (event, context) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: comments[0]
+      message: comments
     })
   }
 
