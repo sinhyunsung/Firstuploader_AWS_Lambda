@@ -119,7 +119,7 @@ const classMap = {
 
 module.exports.handler = async (event, context) => {
 
-  const url= JSON.parse(event.body).url;
+  const url= event.params.path.url;
   const words = url.split('/')[2];
   const ClassConstructor = classMap[words];
 
