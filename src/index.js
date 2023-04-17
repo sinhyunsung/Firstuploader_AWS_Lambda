@@ -119,30 +119,38 @@ const classMap = {
 
 module.exports.handler = async (event, context) => {
 
-  
-  const url=event["queryStringParameters"]["url"];
-  const words = url.split('/')[2];
-  const ClassConstructor = classMap[words];
+  try{
+    const url=event["queryStringParameters"]["url"];
+    const words = url.split('/')[2];
+    const ClassConstructor = classMap[words];
 
-  let web=null;
-  // Create an instance of the class constructor if it exists
-  if (ClassConstructor) {
-    web = new ClassConstructor(url);
-    // do something with web...
-  }else{
+    let web=null;
+    // Create an instance of the class constructor if it exists
+    if (ClassConstructor) {
+      web = new ClassConstructor(url);
+      // do something with web...
+    }else{
+      return {
+        statusCode: 403,
+        message: "데이터에 없는 url 입니다. ("+words+")"
+      }
+    }
+    
+    
+    await web.chrome_on();
+    await web.page_on();
+    await web.page_goto();
+    const comments = await web.crawling();
+    await web.chrome_close();
+  }
+  catch(err){  
     return {
-      statusCode: 403,
-      message: "데이터에 없는 url 입니다. ("+words+")"
+      statusCode: 503,
+      body: JSON.stringify({
+        message: err,
+      })
     }
   }
-  
-  
-  await web.chrome_on();
-  await web.page_on();
-  await web.page_goto();
-  const comments = await web.crawling();
-  await web.chrome_close();
-
   //setTimeout(() => chrome.instance.kill(), 0);
 
   return {
