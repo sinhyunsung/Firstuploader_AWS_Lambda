@@ -10,41 +10,41 @@ class Crawling{
 
   async chrome_on(){
     const minimal_args = [
-      // '--autoplay-policy=user-gesture-required',
-      // '--disable-background-networking',
-      // '--disable-background-timer-throttling',
-      // '--disable-backgrounding-occluded-windows',
-      // '--disable-breakpad',
-      // '--disable-client-side-phishing-detection',
-      // '--disable-component-update',
-      // '--disable-default-apps',
-      // '--disable-dev-shm-usage',
-      // '--disable-domain-reliability',
-      // '--disable-extensions',
-      // '--disable-features=AudioServiceOutOfProcess',
-      // '--disable-hang-monitor',
-      // '--disable-ipc-flooding-protection',
-      // '--disable-notifications',
-      // '--disable-offer-store-unmasked-wallet-cards',
-      // '--disable-popup-blocking',
-      // '--disable-print-preview',
-      // '--disable-prompt-on-repost',
-      // '--disable-renderer-backgrounding',
-      // '--disable-setuid-sandbox',
-      // '--disable-speech-api',
-      // '--disable-sync',
-      // '--hide-scrollbars',
-      // '--ignore-gpu-blacklist',
-      // '--metrics-recording-only',
-      // '--mute-audio',
-      // '--no-default-browser-check',
-      // '--no-first-run',
-      // '--no-pings',
-      // '--no-sandbox',
-      // '--no-zygote',
-      // '--password-store=basic',
-      // '--use-gl=swiftshader',
-      // '--use-mock-keychain',
+      '--autoplay-policy=user-gesture-required',
+      '--disable-background-networking',
+      '--disable-background-timer-throttling',
+      '--disable-backgrounding-occluded-windows',
+      '--disable-breakpad',
+      '--disable-client-side-phishing-detection',
+      '--disable-component-update',
+      '--disable-default-apps',
+      '--disable-dev-shm-usage',
+      '--disable-domain-reliability',
+      '--disable-extensions',
+      '--disable-features=AudioServiceOutOfProcess',
+      '--disable-hang-monitor',
+      '--disable-ipc-flooding-protection',
+      '--disable-notifications',
+      '--disable-offer-store-unmasked-wallet-cards',
+      '--disable-popup-blocking',
+      '--disable-print-preview',
+      '--disable-prompt-on-repost',
+      '--disable-renderer-backgrounding',
+      '--disable-setuid-sandbox',
+      '--disable-speech-api',
+      '--disable-sync',
+      '--hide-scrollbars',
+      '--ignore-gpu-blacklist',
+      '--metrics-recording-only',
+      '--mute-audio',
+      '--no-default-browser-check',
+      '--no-first-run',
+      '--no-pings',
+      '--no-sandbox',
+      '--no-zygote',
+      '--password-store=basic',
+      '--use-gl=swiftshader',
+      '--use-mock-keychain',
     ];
 
     this.browser = await chromium.puppeteer.launch({
@@ -62,26 +62,26 @@ class Crawling{
   async page_on(){
     this.page = await this.browser.newPage(); 
     
-      // const blockResource = [
-      //   'image', 
-      //   'script', 
-      //   'stylesheet', 
-      //   'xhr', 
-      //   'font', 
-      //   'other'
-      // ];
+      const blockResource = [
+        'image', 
+        'script', 
+        'stylesheet', 
+        'xhr', 
+        'font', 
+        'other'
+      ];
 
-      // await this.page.setRequestInterception(true);
+      await this.page.setRequestInterception(true);
 
-      // this.page.on('request', req => {
-      //   // 리소스 유형
-      //   const resource = req.resourceType(); 
-      //   if (blockResource.indexOf(resource) !== -1) {
-      //     req.abort();  // 리소스 막기
-      //   } else {
-      //     req.continue(); // 리소스 허용하기
-      //   }
-      // });
+      this.page.on('request', req => {
+        // 리소스 유형
+        const resource = req.resourceType(); 
+        if (blockResource.indexOf(resource) !== -1) {
+          req.abort();  // 리소스 막기
+        } else {
+          req.continue(); // 리소스 허용하기
+        }
+      });
   }
 
   async page_goto(){
@@ -148,12 +148,12 @@ module.exports.handler = async (event, context) => {
   const comments = await web.crawling();
   await web.chrome_close();
 
-  setTimeout(() => chrome.instance.kill(), 0);
+  // setTimeout(() => chrome.instance.kill(), 0);
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: comments,
+      message: comments
     })
   }
 
