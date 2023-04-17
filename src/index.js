@@ -11,9 +11,9 @@ class Crawling{
   async chrome_on(){
     const minimal_args = [
       '--autoplay-policy=user-gesture-required',
-      '--disable-background-networking',
-      '--disable-background-timer-throttling',
-      '--disable-backgrounding-occluded-windows',
+      // '--disable-background-networking',
+      // '--disable-background-timer-throttling',
+      // '--disable-backgrounding-occluded-windows',
       '--disable-breakpad',
       '--disable-client-side-phishing-detection',
       '--disable-component-update',
