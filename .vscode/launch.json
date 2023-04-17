@@ -15,7 +15,7 @@
                 "-f",
                 "start",
                 "--data",
-                "{ \"url\":\"https://24hz.kr/board/bbs/link.php?bo_table=mlbpark&wr_id=8798212&no=1\"}"
+                "{ \"queryStringParameters\":{\"url\":\"https://24hz.kr/board/bbs/link.php?bo_table=mlbpark&wr_id=8798212&no=1\"}}"
             ]
         }
     ]

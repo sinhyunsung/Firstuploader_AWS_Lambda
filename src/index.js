@@ -120,8 +120,6 @@ const classMap = {
 module.exports.handler = async (event, context) => {
 
   
-  const body = JSON.stringify(event["body-json"]);
-
   const url= event.queryStringParameters.url;
   const words = url.split('/')[2];
   const ClassConstructor = classMap[words];
@@ -145,7 +143,7 @@ module.exports.handler = async (event, context) => {
   const comments = await web.crawling();
   await web.chrome_close();
 
-  setTimeout(() => chrome.instance.kill(), 0);
+  //setTimeout(() => chrome.instance.kill(), 0);
 
   return {
     statusCode: 200,
