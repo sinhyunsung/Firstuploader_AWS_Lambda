@@ -147,7 +147,8 @@ module.exports.handler = async (event, context) => {
 
   //setTimeout(() => chrome.instance.kill(), 0);
  return {
-    body: {  body: body }
+  statusCode: 200,
+  body: body
   };
   return {
     statusCode: 200,
