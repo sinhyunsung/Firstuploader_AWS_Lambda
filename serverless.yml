@@ -11,5 +11,5 @@ functions:
     handler: src/index.handler
     events:
       - http:
-          path: /start/{path}
+          path: /start/{params}
           method: get
