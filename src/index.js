@@ -63,26 +63,26 @@ class Crawling{
   async page_on(){
     this.page = await this.browser.newPage(); 
     
-      // const blockResource = [
-      //   'image', 
-      //   'script', 
-      //   'stylesheet', 
-      //   'xhr', 
-      //   'font', 
-      //   'other'
-      // ];
+      const blockResource = [
+        'image', 
+        'script', 
+        'stylesheet', 
+        'xhr', 
+        'font', 
+        'other'
+      ];
 
-      // await this.page.setRequestInterception(true);
+      await this.page.setRequestInterception(true);
 
-      // this.page.on('request', req => {
-      //   // 리소스 유형
-      //   const resource = req.resourceType(); 
-      //   if (blockResource.indexOf(resource) !== -1) {
-      //     req.abort();  // 리소스 막기
-      //   } else {
-      //     req.continue(); // 리소스 허용하기
-      //   }
-      // });
+      this.page.on('request', req => {
+        // 리소스 유형
+        const resource = req.resourceType(); 
+        if (blockResource.indexOf(resource) !== -1) {
+          req.abort();  // 리소스 막기
+        } else {
+          req.continue(); // 리소스 허용하기
+        }
+      });
   }
 
   async page_goto(){
