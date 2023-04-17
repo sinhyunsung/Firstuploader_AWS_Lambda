@@ -120,9 +120,7 @@ const classMap = {
 module.exports.handler = async (event, context) => {
 
   
-  const userId = event.params.path.userId;
   const body = JSON.stringify(event["body-json"]);
-  const header =  event.params.header;
 
   // const url= event.params.path.url;
   // const words = url.split('/')[2];
@@ -149,7 +147,7 @@ module.exports.handler = async (event, context) => {
 
   //setTimeout(() => chrome.instance.kill(), 0);
  return {
-    body: { id: userId, header: header, body: body }
+    body: {  body: body }
   };
   return {
     statusCode: 200,
