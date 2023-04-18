@@ -51,7 +51,7 @@ class Crawling{
       executablePath: await chromium.executablePath,
       args: minimal_args,
       defaultViewport: chromium.defaultViewport,
-      headless: true,
+      headless: false,
       ignoreHTTPSErrors: true,
     });
   }
@@ -63,12 +63,13 @@ class Crawling{
 
   async page_on(){
     this.page = await this.browser.newPage(); 
+    this.page.on('console', message => console.log(message.text()));
     
       const blockResource = [
         'image', 
         //'script', 
         'stylesheet', 
-        'xhr', 
+        // 'xhr', 
         'font', 
         'other'
       ];
@@ -112,10 +113,17 @@ class Ruli extends Crawling{
   }
 }
 
+class Snu extends Crawling{
+  
+  async crawling(){
+      await this.page.waitForSelector('.user-name-and-created-at-container');
+      const comments = await this.page.$$eval('.user-name-and-created-at-container', comments => comments.map(comment => comment.nextElementSibling.innerText));
+      return comments;
+  }
+}
 class EngHani extends Crawling{
   
   async crawling(){
-      // this.page.on('console', message => console.log(message.text()));
       await this.page.waitForSelector('iframe[src^="https://www.facebook.com/plugins/comments.php"]');
 
       const iframeElement = await this.page.$('iframe[src^="https://www.facebook.com/plugins/comments.php"]');
@@ -134,6 +142,7 @@ const classMap = {
   "24hz.kr": Mlb,
   "bbs.ruliweb.com":Ruli,
   "english.hani.co.kr":EngHani,
+  "factcheck.snu.ac.kr":Snu,
 
   //"example.com": NBA,
   //"google.com": NFL

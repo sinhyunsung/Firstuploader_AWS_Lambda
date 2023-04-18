@@ -15,7 +15,7 @@
                 "-f",
                 "start",
                 "--data",
-                "http://english.hani.co.kr/arti/english_edition/e_national/1085151.html"
+                "https://factcheck.snu.ac.kr/facts/show?id=4846"
             ]
         }
     ]
