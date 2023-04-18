@@ -66,7 +66,7 @@ class Crawling{
     
       const blockResource = [
         'image', 
-        'script', 
+        //'script', 
         'stylesheet', 
         'xhr', 
         'font', 
@@ -104,11 +104,37 @@ class Mlb extends Crawling{
 }
 
 
+class Ruli extends Crawling{
+  
+  async crawling(){
+      const comments = await this.page.$$eval('.text', comments => comments.map(comment => comment.innerText));
+      return comments;
+  }
+}
+
+class EngHani extends Crawling{
+  
+  async crawling(){
+      // this.page.on('console', message => console.log(message.text()));
+      await this.page.waitForSelector('iframe[src^="https://www.facebook.com/plugins/comments.php"]');
+
+      const iframeElement = await this.page.$('iframe[src^="https://www.facebook.com/plugins/comments.php"]');
+      const iframe = await iframeElement.contentFrame({ waitUntil: "networkidle0" });
+      await iframe.waitForSelector('.UFIImageBlockContent');
+      let comments = await iframe.$$eval('.UFIImageBlockContent', comments => comments.map(comment => comment.innerText));
+      comments.shift();
+      comments=comments.map(comment=>comment.split("\n")[1]);
+      return comments;
+    }
+}
 
 // ################################ url convert class 딕셔너리 #######################################//
 
 const classMap = {
   "24hz.kr": Mlb,
+  "bbs.ruliweb.com":Ruli,
+  "english.hani.co.kr":EngHani,
+
   //"example.com": NBA,
   //"google.com": NFL
   // add more mappings here...
@@ -138,9 +164,12 @@ module.exports.handler = async (event, context) => {
     web = new ClassConstructor(url);
     // do something with web...
   }else{
+    const comments=[];
     return {
-      statusCode: 403,
-      message: "데이터에 없는 url 입니다. ("+words+")"
+      statusCode: 204,
+      body: JSON.stringify({
+        message: comments
+      })
     }
   }
   
