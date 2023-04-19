@@ -15,7 +15,7 @@
                 "-f",
                 "start",
                 "--data",
-                "https://factcheck.snu.ac.kr/facts/show?id=4846"
+                "https://go.seoul.co.kr/news/newsView.php?id=20230419012011&section=news_local&section2=&page=1"
             ]
         }
     ]

@@ -63,10 +63,10 @@ class Crawling{
 
   async page_on(){
     this.page = await this.browser.newPage(); 
-    this.page.on('console', message => console.log(message.text()));
+    // this.page.on('console', message => console.log(message.text()));
     
       const blockResource = [
-        'image', 
+        // 'image', 
         //'script', 
         'stylesheet', 
         // 'xhr', 
@@ -113,6 +113,31 @@ class Ruli extends Crawling{
   }
 }
 
+class Dc extends Crawling{
+  
+  async crawling(){
+      const comments = await this.page.$$eval('.usertxt', comments => comments.map(comment => comment.innerText));
+      return comments;
+  }
+}
+
+class Hankook extends Crawling{
+  
+  async crawling(){
+      const comments = await this.page.$$eval('.comment-box > .text', comments => comments.map(comment => comment.innerText));
+      return comments;
+  }
+}
+
+class Mbc extends Crawling{
+  
+  async crawling(){
+      const comments = await this.page.$$eval('.user_text', comments => comments.map(comment => comment.innerText));
+      return comments;
+  }
+}
+
+
 class Snu extends Crawling{
   
   async crawling(){
@@ -143,6 +168,10 @@ const classMap = {
   "bbs.ruliweb.com":Ruli,
   "english.hani.co.kr":EngHani,
   "factcheck.snu.ac.kr":Snu,
+  "gall.dcinside.com":Dc,
+  "hankookilbo.com":Hankook,
+  "imnews.imbc.com":Mbc,
+
 
   //"example.com": NBA,
   //"google.com": NFL
