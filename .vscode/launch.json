@@ -15,7 +15,7 @@
                 "-f",
                 "start",
                 "--data",
-                "https://go.seoul.co.kr/news/newsView.php?id=20230419012011&section=news_local&section2=&page=1"
+                "https://news.kbs.co.kr/news/view.do?ncd=7635202&amp;ref=DA"
             ]
         }
     ]

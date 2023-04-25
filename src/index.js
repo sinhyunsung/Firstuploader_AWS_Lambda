@@ -6,6 +6,7 @@ class Crawling{
     this.url=url;
     this.browser;
     this.page;
+    this.downloadedResources= new Set();
   }
 
   async chrome_on(){
@@ -32,7 +33,7 @@ class Crawling{
       '--disable-renderer-backgrounding',
       '--disable-setuid-sandbox',
       '--disable-speech-api',
-      '--disable-sync',
+      '--disable-sync','--disable-web-security', '--disable-features=IsolateOrigins,site-per-process',
       '--hide-scrollbars',
       '--ignore-gpu-blacklist',
       '--metrics-recording-only',
@@ -45,11 +46,13 @@ class Crawling{
       '--password-store=basic',
       '--use-gl=swiftshader',
       '--use-mock-keychain',
+      '--window-size=1920,1080',
       ];
 
     this.browser = await chromium.puppeteer.launch({
       executablePath: await chromium.executablePath,
       args: minimal_args,
+      waitForInitialPage: true,
       defaultViewport: chromium.defaultViewport,
       headless: false,
       ignoreHTTPSErrors: true,
@@ -63,32 +66,53 @@ class Crawling{
 
   async page_on(){
     this.page = await this.browser.newPage(); 
+    // this.page_resource_off();
+  }
+
+  async page_resource_off(){
+    
     // this.page.on('console', message => console.log(message.text()));
     
       const blockResource = [
-        // 'image', 
+        'image', 
         //'script', 
         'stylesheet', 
         // 'xhr', 
         'font', 
-        'other'
+        // 'other'
       ];
 
-      await this.page.setRequestInterception(true);
+     await this.page.setRequestInterception(true);
 
       this.page.on('request', req => {
-        // 리소스 유형
-        const resource = req.resourceType(); 
+        // resource type
+        const resource = req.resourceType();
+      
         if (blockResource.indexOf(resource) !== -1) {
-          req.abort();  // 리소스 막기
+          // check if the resource has been downloaded before
+          if (this.downloadedResources.has(req.url())) {
+            req.continue(); // allow previously downloaded resources
+          } else {
+            this.downloadedResources.add(req.url()); // add the resource to the downloaded set
+            req.abort(); // allow new resources to be downloaded
+          }
         } else {
-          req.continue(); // 리소스 허용하기
+            req.continue();
         }
       });
+      
   }
 
+
   async page_goto(){
-    await this.page.goto(this.url);
+    // await this.page.goto(this.url,{ waitUntil: 'networkidle0' });
+      
+    await Promise.all([this.page.waitForNavigation(), this.page.goto(this.url)]);
+    // await Promise.race([
+    //   this.page.goto(this.url).catch(e => void e),
+    //   new Promise(x => setTimeout(x, 20 * 100))
+    // ]);
+    
   }
 }
 
@@ -137,6 +161,38 @@ class Mbc extends Crawling{
   }
 }
 
+class Kbs extends Crawling{
+  
+  async crawling(){
+  
+      const height = await this.page.evaluate(() => {
+        return document.documentElement.scrollHeight;
+      });
+    
+      await this.page.evaluate((height) => {
+        window.scrollTo(0, height);
+      }, height);
+      const iframeElement = await this.page.$('#msg > div.reply > div > iframe');
+      const iframe = await iframeElement.contentFrame();
+      console.log(iframe, 'iframe');
+      // await iframe.waitForNavigation();
+      await iframe.waitForSelector('div.reply-content');
+      while(1){
+      try{
+            await iframe.click('.more-btn');
+            await iframe.waitForSelector('.more-btn', { timeout: 3000 });
+         }catch{
+            break;
+         }
+      }
+      await iframe.waitForSelector('div.reply-content');
+      const comments = await iframe.$$eval('div.reply-content > p', comments => comments.map(comment => comment.innerText));
+      console.log(comments);
+      return comments;
+  }
+  
+}
+
 
 class Snu extends Crawling{
   
@@ -146,6 +202,7 @@ class Snu extends Crawling{
       return comments;
   }
 }
+
 class EngHani extends Crawling{
   
   async crawling(){
@@ -171,6 +228,10 @@ const classMap = {
   "gall.dcinside.com":Dc,
   "hankookilbo.com":Hankook,
   "imnews.imbc.com":Mbc,
+  "mlbpark.donga.com":Mlb,
+  "news.kbs.co.kr":Kbs,
+
+
 
 
   //"example.com": NBA,
@@ -227,7 +288,4 @@ module.exports.handler = async (event, context) => {
     })
   }
 
-
-
 }
-
