@@ -54,7 +54,7 @@ class Crawling{
       args: minimal_args,
       waitForInitialPage: true,
       defaultViewport: chromium.defaultViewport,
-      headless: false,
+      headless: true,
       ignoreHTTPSErrors: true,
     });
   }
