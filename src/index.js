@@ -74,7 +74,7 @@ class Crawling{
     // this.page.on('console', message => console.log(message.text()));
     
       const blockResource = [
-        'image', 
+        // 'image', 
         //'script', 
         'stylesheet', 
         // 'xhr', 
