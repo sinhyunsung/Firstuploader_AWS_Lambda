@@ -54,7 +54,7 @@ class Crawling{
       args: minimal_args,
       waitForInitialPage: true,
       defaultViewport: chromium.defaultViewport,
-      headless: false,
+      headless: true,
       ignoreHTTPSErrors: true,
     });
   }
@@ -104,7 +104,7 @@ class Crawling{
   }
   
   async page_goto(){
-    await this.page.goto(this.url,{ waitUntil: 'networkidle0' });
+    await this.page.goto(this.url,{ waitUntil: 'networkidle2' });
       
     // await Promise.all([this.page.waitForNavigation(), this.page.goto(this.url)]);
     
