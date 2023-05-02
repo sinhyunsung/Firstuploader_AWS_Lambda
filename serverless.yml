@@ -4,7 +4,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   memorySize: 512
-  timeout: 30
+  timeout: 60
   region: ap-northeast-2
 functions:
   start:
