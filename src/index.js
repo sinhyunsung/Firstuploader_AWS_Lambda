@@ -102,12 +102,12 @@ class Crawling{
       });
       
   }
-
-
+  
   async page_goto(){
-    // await this.page.goto(this.url,{ waitUntil: 'networkidle0' });
+    await this.page.goto(this.url,{ waitUntil: 'networkidle0' });
       
-    await Promise.all([this.page.waitForNavigation(), this.page.goto(this.url)]);
+    // await Promise.all([this.page.waitForNavigation(), this.page.goto(this.url)]);
+    
     // await Promise.race([
     //   this.page.goto(this.url).catch(e => void e),
     //   new Promise(x => setTimeout(x, 20 * 100))
@@ -203,6 +203,57 @@ class Snu extends Crawling{
   }
 }
 
+class Kmib extends Crawling{
+  
+  async crawling(){
+  
+    let height = await this.page.evaluate(() => {
+      return document.documentElement.scrollHeight;
+    });
+  
+    await this.page.evaluate((height) => {
+      window.scrollTo(0, height);
+    }, height);
+    
+    const iframeElement = await this.page.$('div.render-late-effect > div > div > iframe');
+    const iframe = await iframeElement.contentFrame();
+    console.log(iframe, 'iframe');
+    // await iframe.waitForNavigation();
+
+    let comments=[]
+    
+    height = await this.page.evaluate(() => {
+      return document.documentElement.scrollHeight;
+    });
+  
+    await this.page.evaluate((height) => {
+      window.scrollTo(0, height);
+    }, height);
+    
+    let sti=1;
+    while(1){
+    try{
+        await iframe.waitForSelector('div.reply-content');
+          
+          for (var i = sti+1; i < 7; i++) {
+            
+            await iframe.waitForSelector('div.reply-content > p', { timeout: 1000 });                   
+            const commentst = await iframe.$$eval('div.reply-bottom > div.reply-content-wrapper > div.reply-content > p', comments => comments.map(comment => comment.innerText));
+            comments=comments.concat(commentst);
+            await iframe.click(`.more-wrapper > button:nth-child(${i})`, { timeout: 100 });
+            await iframe.waitForSelector(`.more-wrapper > button:nth-child(${i})`, { timeout: 1000 });
+            await iframe.waitForSelector('div.reply-content', { timeout: 1000 });
+          }
+          sti=2;
+       }catch{
+          break;
+       }
+    }
+    
+    return comments;
+}
+}
+
 class EngHani extends Crawling{
   
   async crawling(){
@@ -230,6 +281,7 @@ const classMap = {
   "imnews.imbc.com":Mbc,
   "mlbpark.donga.com":Mlb,
   "news.kbs.co.kr":Kbs,
+  "news.kmib.co.kr":Kmib,
 
 
 
